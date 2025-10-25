@@ -1,0 +1,26 @@
+/* Sets base font color and a vibrant gradient background. */
+body {
+  /* Light theme */
+  background-color: #a5f3fc; /* Fallback color: Tailwind cyan-200 */
+  background-image: linear-gradient(to bottom right, #a5f3fc, #d8b4fe); /* Gradient from cyan-200 to purple-300 */
+  color: #1e293b; /* slate-800 */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  /* Dark theme */
+  background-color: #0f172a; /* slate-900 */
+  background-image: linear-gradient(to bottom right, #1e293b, #3b0764); /* slate-800 to a dark purple */
+  color: #cbd5e1; /* slate-300 */
+}
+
+/* Hide arrows from number input */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
