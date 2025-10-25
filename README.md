@@ -1,19 +1,15 @@
 # FocusFence
 
-A personal focus dashboard for students to block out distractions, track study sessions, and boost productivity. This application is designed to run entirely in the browser with no build step required.
+A personal focus dashboard to help you block out distractions, track study sessions, and boost productivity. This application is designed to run entirely in the browser with no build step required.
 
 ## Features
 
 - **Focus Sessions:** Start a timer to focus on your work. A virtual tree grows as you maintain focus.
-- **Distraction Blocking:** The app enters fullscreen and plays an alert if you navigate away or exit fullscreen, helping you stay on task.
-- **Manual & Scheduled Modes:** Set up a one-time focus session or create a recurring weekly schedule.
-- **Progress Tracking:** "Plant" a tree for each completed session and track your progress towards milestones.
-- **Daily Rewards:** Complete at least one session a day to earn a daily reward.
-- **Personalization:**
-    - Light and Dark modes.
-    - Personalized greetings.
-- **Ambiance:** An integrated music player provides calming lofi music for your study sessions.
-- **Offline First:** All your data, including your profile and progress, is stored locally in your browser.
+- **Distraction Blocking:** The app enters fullscreen and creates a visual "buzz" effect if you navigate away, helping you stay on task.
+- **Progress Tracking:** "Plant" a tree for each completed session and see your total count grow.
+- **Minimalist Design:** A clean, dark-themed interface to minimize eye strain and help you concentrate.
+- **Offline First:** All your progress is stored locally in your browser. No account needed.
+- **Lightweight & Fast:** No heavy libraries or build steps, ensuring the app loads quickly.
 
 ## How to Run Locally
 
