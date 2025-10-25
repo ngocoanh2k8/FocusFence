@@ -15,9 +15,25 @@ A personal focus dashboard for students to block out distractions, track study s
 - **Ambiance:** An integrated music player provides calming lofi music for your study sessions.
 - **Offline First:** All your data, including your profile and progress, is stored locally in your browser.
 
-## How to Run
+## How to Run Locally
 
 1.  Clone this repository or download the files.
 2.  Open the `index.html` file in a modern web browser that supports ES Modules and Import Maps (like the latest versions of Chrome, Firefox, Edge, or Safari).
 
 That's it! There's no need for a build process or a local server.
+
+## Deployment
+
+This project is configured for easy deployment to static hosting services like GitHub Pages.
+
+### GitHub Pages
+
+1.  **Repository Setup:** Make sure your main HTML file, `index.html`, is in the root directory of your repository.
+2.  **Push to GitHub:** Push all the project files to your GitHub repository.
+3.  **Enable GitHub Pages:**
+    *   In your repository on GitHub, go to the **Settings** tab.
+    *   In the left sidebar, click on **Pages**.
+    *   Under "Build and deployment", for the "Source", select **Deploy from a branch**.
+    *   Select the branch you want to deploy from (usually `main` or `master`) and keep the folder as `/ (root)`.
+    *   Click **Save**.
+4.  **Access Your Site:** GitHub will provide you with a URL (e.g., `https://<your-username>.github.io/<repository-name>/`). It might take a few minutes for the site to become live.

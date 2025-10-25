@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Configurator, AppConfig } from './components/Configurator';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tree } from './components/Tree';
@@ -6,7 +6,6 @@ import { EmailCapture } from './components/EmailCapture';
 import { StudentProfile, DailyRewardStatus } from './types';
 import { ProgressBar } from './components/ProgressBar';
 import { DailyReward } from './components/DailyReward';
-import { MusicPlayer } from './components/MusicPlayer';
 
 const pageTransition = {
   initial: { opacity: 0, y: 20 },
@@ -82,12 +81,7 @@ const App: React.FC = () => {
   const [studentData, setStudentData] = useState<StudentProfile | null>(null);
   const [totalTrees, setTotalTrees] = useState(0);
   const [dailyReward, setDailyReward] = useState<DailyRewardStatus | null>(null);
-
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const oscillatorRef = useRef<OscillatorNode | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-  const lfoRef = useRef<OscillatorNode | null>(null);
-  const lfoGainRef = useRef<GainNode | null>(null);
+  const [isBuzzing, setIsBuzzing] = useState(false);
   
   const updateStudentData = (data: StudentProfile) => {
     try {
@@ -169,17 +163,13 @@ const App: React.FC = () => {
   };
 
   const startAlarm = useCallback(() => {
-    if (gainNodeRef.current && audioContextRef.current && audioContextRef.current.state === 'running') {
-      gainNodeRef.current.gain.exponentialRampToValueAtTime(0.5, audioContextRef.current.currentTime + 0.1);
-      document.title = "🚨 BÁO ĐỘNG! QUAY LẠI TẬP TRUNG! 🚨";
-    }
+    setIsBuzzing(true);
+    document.title = "🚨 BÁO ĐỘNG! QUAY LẠI TẬP TRUNG! 🚨";
   }, []);
 
   const stopAlarm = useCallback(() => {
-    if (gainNodeRef.current && audioContextRef.current && audioContextRef.current.state === 'running') {
-      gainNodeRef.current.gain.exponentialRampToValueAtTime(0.0001, audioContextRef.current.currentTime + 0.1);
-      document.title = "FocusFence";
-    }
+    setIsBuzzing(false);
+    document.title = "FocusFence";
   }, []);
 
   const cleanupSession = useCallback(() => {
@@ -187,30 +177,6 @@ const App: React.FC = () => {
     if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
     }
-    
-    if (lfoRef.current) {
-        lfoRef.current.stop();
-        lfoRef.current.disconnect();
-    }
-    if (lfoGainRef.current) {
-        lfoGainRef.current.disconnect();
-    }
-    if (oscillatorRef.current) {
-        oscillatorRef.current.stop();
-        oscillatorRef.current.disconnect();
-    }
-    if (gainNodeRef.current) {
-        gainNodeRef.current.disconnect();
-    }
-    if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-        audioContextRef.current.close().catch(() => {});
-    }
-    
-    audioContextRef.current = null;
-    oscillatorRef.current = null;
-    gainNodeRef.current = null;
-    lfoRef.current = null;
-    lfoGainRef.current = null;
     document.title = "FocusFence";
   }, [stopAlarm]);
 
@@ -223,37 +189,6 @@ const App: React.FC = () => {
     document.documentElement.requestFullscreen().catch(err => {
         console.error(`Could not enter fullscreen: ${err.message}`);
     });
-
-     try {
-        const context = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const oscillator = context.createOscillator();
-        const gain = context.createGain();
-        const lfo = context.createOscillator();
-        const lfoGain = context.createGain();
-
-        oscillator.type = 'sawtooth';
-        oscillator.frequency.setValueAtTime(300, context.currentTime); 
-        lfo.type = 'square';
-        lfo.frequency.setValueAtTime(8, context.currentTime); 
-        lfoGain.gain.setValueAtTime(100, context.currentTime); 
-        gain.gain.setValueAtTime(0.0001, context.currentTime);
-
-        lfo.connect(lfoGain);
-        lfoGain.connect(oscillator.frequency);
-        oscillator.connect(gain);
-        gain.connect(context.destination);
-        
-        lfo.start();
-        oscillator.start();
-        
-        audioContextRef.current = context;
-        oscillatorRef.current = oscillator;
-        gainNodeRef.current = gain;
-        lfoRef.current = lfo;
-        lfoGainRef.current = lfoGain;
-    } catch (e) {
-        console.error("Web Audio API is not supported in this browser.", e);
-    }
   }, []);
 
 
@@ -394,8 +329,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen font-sans p-4 md:p-8 flex items-center justify-center">
-        <MusicPlayer />
+    <div className={`min-h-screen font-sans p-4 md:p-8 flex items-center justify-center ${isBuzzing ? 'shake' : ''}`}>
         <AnimatePresence>
             {showEarlyExitScreen && (
                  <motion.div
